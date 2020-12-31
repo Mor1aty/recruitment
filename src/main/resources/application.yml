@@ -1,0 +1,21 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/recruitment?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    password: root
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    platform: mysql
+
+#\u5F00\u542F\u9A7C\u5CF0\u547D\u540D
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    com.lishi.recruitment.mapper: debug
