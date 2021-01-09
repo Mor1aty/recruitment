@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8888
   servlet:
     context-path: /api/
 spring:
@@ -12,7 +12,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     platform: mysql
 
-#\u5F00\u542F\u9A7C\u5CF0\u547D\u540D
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
