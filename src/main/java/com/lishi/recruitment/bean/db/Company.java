@@ -1,5 +1,6 @@
 package com.lishi.recruitment.bean.db;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 /**
@@ -10,6 +11,9 @@ import lombok.Data;
 @Data
 public class Company {
     private String account;
+
+    @JsonIgnore
+    private String password;
     private String name;
     private String city;
     private String website;

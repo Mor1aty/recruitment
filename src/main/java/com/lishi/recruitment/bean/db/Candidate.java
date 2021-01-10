@@ -1,5 +1,6 @@
 package com.lishi.recruitment.bean.db;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,6 +13,9 @@ import java.util.Date;
 @Data
 public class Candidate {
     private String account;
+
+    @JsonIgnore
+    private String password;
     private String name;
     private String gender;
     private String phone;
