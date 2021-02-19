@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.lishi.recruitment.annotation.login.storage.Token;
 
 import javax.servlet.http.Part;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -30,7 +31,7 @@ public class WrapParams {
     /**
      * 存入字段
      *
-     * @param key String
+     * @param key   String
      * @param value Object
      */
     public void put(String key, Object value) {
@@ -108,12 +109,22 @@ public class WrapParams {
     /**
      * 根据 key 获取对应 value，转化为泛型
      *
-     * @param key String
+     * @param key   String
      * @param clazz Class<T>
      * @return T
      */
-    public <T> T getObject(String key, Class<T> clazz) {
+    public <T> T getKeyObject(String key, Class<T> clazz) {
         return jsonObject.getObject(key, clazz);
+    }
+
+    /**
+     * 转化为泛型
+     *
+     * @param clazz Class<T>
+     * @return T
+     */
+    public <T> T getObject(Class<T> clazz) {
+        return jsonObject.toJavaObject(clazz);
     }
 
     /**
@@ -138,6 +149,7 @@ public class WrapParams {
 
     /**
      * 根据 key 获取对应 value，转化为 long
+     *
      * @param key String
      * @return long
      */
