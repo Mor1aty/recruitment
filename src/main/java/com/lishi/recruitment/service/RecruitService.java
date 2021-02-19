@@ -2,6 +2,7 @@ package com.lishi.recruitment.service;
 
 import com.lishi.recruitment.bean.back.AllCompany;
 import com.lishi.recruitment.bean.back.AllRecruit;
+import com.lishi.recruitment.bean.param.Condition;
 import com.lishi.recruitment.bean.param.ParamCondition;
 import com.lishi.recruitment.bean.param.ParamWhere;
 import com.lishi.recruitment.mapper.RecruitMapper;
@@ -27,32 +28,14 @@ public class RecruitService {
     /**
      * 根据条件获取所有招聘信息
      *
-     * @param findRecruit FindRecruit
+     * @param paramCondition FindRecruit
      * @return Wrapper<AllRecruit>
      */
-    public Wrapper<AllRecruit> findRecruitByCondition(ParamCondition findRecruit) {
-        List<ParamWhere> wheres = findRecruit.getWheres();
-        StringBuilder condition = new StringBuilder();
-        String limit = "";
-        if (wheres != null && !wheres.isEmpty()) {
-            condition.append("where ");
-            for (ParamWhere where : wheres) {
-                condition.append(where.getKey()).append(" ").append(where.getOpt()).append(" '").
-                        append(where.getValue()).append("' ").append(where.getNext()).append(" ");
-            }
-        }
-        if (ValueUtils.valNotEmpty(findRecruit.getOrder()) && ValueUtils.valNotEmpty(findRecruit.getOrderBy())) {
-            condition.append("order by `").append(findRecruit.getOrderBy()).append("` ").
-                    append(findRecruit.getOrder()).append(" ");
-        }
-        if (findRecruit.getPageNum() > 0 && findRecruit.getPageSize() > 0) {
-            int pageNum = (findRecruit.getPageNum() - 1) * findRecruit.getPageSize();
-            limit = "limit " + pageNum + ", " + findRecruit.getPageSize() + " ";
-        }
-
+    public Wrapper<AllRecruit> findRecruitByCondition(ParamCondition paramCondition) {
+        Condition condition = handleParamCondition(paramCondition);
         AllRecruit allRecruit = new AllRecruit();
-        allRecruit.setJobs(recruitMapper.findRecruitByCondition(condition.toString() + limit));
-        allRecruit.setCount(recruitMapper.findRecruitCountByCondition(condition.toString()));
+        allRecruit.setJobs(recruitMapper.findRecruitByCondition(condition.getConditionWithLimit()));
+        allRecruit.setCount(recruitMapper.findRecruitCountByCondition(condition.getCondition()));
 
         return WrapMapper.okObtain("获取成功", allRecruit);
     }
@@ -60,30 +43,44 @@ public class RecruitService {
     /**
      * 根据条件获取公司信息
      *
-     * @param findRecruit FindRecruit
+     * @param paramCondition FindRecruit
      * @return Wrapper<AllCompany>
      */
-    public Wrapper<AllCompany> findCompanyByCondition(ParamCondition findRecruit) {
-        List<ParamWhere> wheres = findRecruit.getWheres();
-        StringBuilder condition = new StringBuilder();
+    public Wrapper<AllCompany> findCompanyByCondition(ParamCondition paramCondition) {
+        Condition condition = handleParamCondition(paramCondition);
+        AllCompany allCompany = new AllCompany();
+        allCompany.setCompanies(recruitMapper.findCompanyByCondition(condition.getConditionWithLimit()));
+        allCompany.setCount(recruitMapper.findCompanyCountByCondition(condition.getCondition()));
+
+        return WrapMapper.okObtain("获取成功", allCompany);
+    }
+
+    /**
+     * 处理参数条件
+     *
+     * @param paramCondition ParamCondition
+     * @return Condition
+     */
+    private Condition handleParamCondition(ParamCondition paramCondition) {
+        List<ParamWhere> wheres = paramCondition.getWheres();
+        StringBuilder sb = new StringBuilder();
         String limit = "";
         if (wheres != null && !wheres.isEmpty()) {
-            condition.append("where ");
+            sb.append("where ");
             for (ParamWhere where : wheres) {
-                condition.append(where.getKey()).append(" ").append(where.getOpt()).append(" '").
+                sb.append(where.getKey()).append(" ").append(where.getOpt()).append(" '").
                         append(where.getValue()).append("' ").append(where.getNext()).append(" ");
             }
         }
-        if (ValueUtils.valNotEmpty(findRecruit.getOrder()) && ValueUtils.valNotEmpty(findRecruit.getOrderBy())) {
-            condition.append("order by `").append(findRecruit.getOrderBy()).append("` ").
-                    append(findRecruit.getOrder()).append(" ");
+        if (ValueUtils.valNotEmpty(paramCondition.getOrder()) && ValueUtils.valNotEmpty(paramCondition.getOrderBy())) {
+            sb.append("order by `").append(paramCondition.getOrderBy()).append("` ").
+                    append(paramCondition.getOrder()).append(" ");
         }
-        if (findRecruit.getPageNum() > 0 && findRecruit.getPageSize() > 0) {
-            int pageNum = (findRecruit.getPageNum() - 1) * findRecruit.getPageSize();
-            limit = "limit " + pageNum + ", " + findRecruit.getPageSize() + " ";
+        if (paramCondition.getPageNum() > 0 && paramCondition.getPageSize() > 0) {
+            int pageNum = (paramCondition.getPageNum() - 1) * paramCondition.getPageSize();
+            limit = "limit " + pageNum + ", " + paramCondition.getPageSize() + " ";
         }
-
-
-        return null;
+        return new Condition(sb.toString(), sb.toString() + limit);
     }
+
 }

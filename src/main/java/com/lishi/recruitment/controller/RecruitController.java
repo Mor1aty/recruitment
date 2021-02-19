@@ -1,9 +1,11 @@
 package com.lishi.recruitment.controller;
 
+import com.lishi.recruitment.annotation.login.aspect.NeedLogin;
 import com.lishi.recruitment.annotation.valid.aspect.ParamValidation;
 import com.lishi.recruitment.bean.back.AllCompany;
 import com.lishi.recruitment.bean.back.AllRecruit;
 import com.lishi.recruitment.bean.param.ParamCondition;
+import com.lishi.recruitment.constant.Constant;
 import com.lishi.recruitment.service.RecruitService;
 import com.lishi.recruitment.wrap.WrapParams;
 import com.lishi.recruitment.wrap.Wrapper;
@@ -42,7 +44,17 @@ public class RecruitController {
      * @param wrapParams WrapParams
      * @return Wrapper<AllCompany>
      */
+    @PostMapping("findCompany")
+    @ParamValidation
     public Wrapper<AllCompany> findCompanyByCondition(WrapParams wrapParams) {
+        return recruitService.findCompanyByCondition(wrapParams.getObject(ParamCondition.class));
+    }
+
+    // 公司发布新的招聘
+    @PostMapping("addRecruit")
+    @ParamValidation
+    @NeedLogin(level = Constant.IDENTITY_COMPANY)
+    public Wrapper<String> addRecruit(WrapParams wrapParams) {
         return null;
     }
 }
