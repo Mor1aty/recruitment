@@ -24,4 +24,19 @@ public class Constant {
      * 管理员身份
      */
     public static final int IDENTITY_ADMIN = 2;
+
+    /**
+     * 招聘进度: 等待
+     */
+    public static final int PROGRESS_WAIT = 0;
+
+    /**
+     * 招聘进度: 接受
+     */
+    public static final int PROGRESS_ACCEPT = 1;
+
+    /**
+     * 招聘进度: 拒绝
+     */
+    public static final int PROGRESS_REFUSE = 2;
 }

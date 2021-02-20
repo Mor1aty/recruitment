@@ -1,13 +1,19 @@
 package com.lishi.recruitment.service;
 
 import com.lishi.recruitment.bean.back.AllCompany;
+import com.lishi.recruitment.bean.back.AllProgress;
 import com.lishi.recruitment.bean.back.AllRecruit;
+import com.lishi.recruitment.bean.back.BackProgress;
+import com.lishi.recruitment.bean.db.Job;
+import com.lishi.recruitment.bean.db.Progress;
 import com.lishi.recruitment.bean.param.Condition;
 import com.lishi.recruitment.bean.param.ParamCondition;
 import com.lishi.recruitment.bean.param.ParamWhere;
+import com.lishi.recruitment.constant.Constant;
 import com.lishi.recruitment.mapper.RecruitMapper;
 import com.lishi.recruitment.utils.ValueUtils;
 import com.lishi.recruitment.wrap.WrapMapper;
+import com.lishi.recruitment.wrap.WrapParams;
 import com.lishi.recruitment.wrap.Wrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -83,4 +89,133 @@ public class RecruitService {
         return new Condition(sb.toString(), sb.toString() + limit);
     }
 
+    /**
+     * 公司发布新的招聘
+     *
+     * @param name      String
+     * @param type      int
+     * @param company   String
+     * @param desc      String
+     * @param minSalary int
+     * @param maxSalary int
+     * @param city      String
+     * @return Wrapper<String>
+     */
+    public Wrapper<String> addRecruit(String name, int type, String company, String desc, int minSalary, int maxSalary, String city) {
+        Job job = new Job();
+        job.setName(name);
+        job.setType(type);
+        job.setCompany(company);
+        job.setDesc(desc);
+        job.setMinSalary(minSalary);
+        job.setMaxSalary(maxSalary);
+        job.setCompany(city);
+        if (recruitMapper.insertJob(job) <= 0) {
+            return WrapMapper.errorExec("发布新招聘失败");
+        }
+        return WrapMapper.okExec("发布新招聘成功");
+    }
+
+    /**
+     * 公司修改招聘
+     *
+     * @param id        int
+     * @param name      String
+     * @param type      int
+     * @param desc      String
+     * @param minSalary int
+     * @param maxSalary int
+     * @param city      String
+     * @return Wrapper<String>
+     */
+    public Wrapper<String> editRecruit(int id, String name, int type, String desc, int minSalary, int maxSalary,
+                                       String city, String company) {
+        Job job = new Job();
+        job.setId(id);
+        job.setName(name);
+        job.setType(type);
+        job.setDesc(desc);
+        job.setMinSalary(minSalary);
+        job.setMaxSalary(maxSalary);
+        job.setCompany(city);
+        job.setCompany(company);
+        if (recruitMapper.updateJob(job) <= 0) {
+            return WrapMapper.errorExec("更新招聘失败");
+        }
+        return WrapMapper.okExec("更新招聘成功");
+    }
+
+    /**
+     * 公司删除招聘
+     *
+     * @param id      int
+     * @param company String
+     * @return Wrapper<String>
+     */
+    public Wrapper<String> delRecruit(int id, String company) {
+        if (recruitMapper.deleteJob(id, company) <= 0) {
+            return WrapMapper.errorExec("删除招聘失败");
+        }
+        return WrapMapper.okExec("删除招聘成功");
+    }
+
+    /**
+     * 公司获取招聘进度
+     *
+     * @param job int
+     * @return Wrapper<AllProgress>
+     */
+    public Wrapper<AllProgress> findProgress(int job) {
+        List<BackProgress> progresses = recruitMapper.findProgressByJob(job);
+        AllProgress allProgress = new AllProgress();
+        allProgress.setProgresses(progresses);
+        allProgress.setCount(progresses.size());
+        return WrapMapper.okObtain("获取成功", allProgress);
+    }
+
+    /**
+     * 公司修改招聘进度
+     *
+     * @param id     int
+     * @param result int
+     * @return Wrapper<String>
+     */
+    public Wrapper<String> editProgress(int id, int result) {
+        if (recruitMapper.updateProgress(id, result) <= 0) {
+            return WrapMapper.errorExec("修改招聘进度失败");
+        }
+        return WrapMapper.okExec("修改招聘进度成功");
+    }
+
+    /**
+     * 个人选择工作
+     *
+     * @param job       int
+     * @param candidate String
+     * @return Wrapper<String>
+     */
+    public Wrapper<String> chooseJob(int job, String candidate) {
+        Progress progress = new Progress();
+        progress.setJob(job);
+        progress.setCandidate(candidate);
+        progress.setProgress(Constant.PROGRESS_WAIT);
+        if (recruitMapper.insertProgress(progress) <= 0) {
+            return WrapMapper.errorExec("选择工作失败");
+        }
+        return WrapMapper.okExec("选择工作成功");
+    }
+
+    /**
+     * 个人查询我的应聘
+     *
+     * @param candidate String
+     * @return Wrapper<AllProgress>
+     */
+    public Wrapper<AllProgress> findMyProgress(String candidate) {
+        List<BackProgress> progresses = recruitMapper.findProgressByCandidate(candidate);
+        AllProgress allProgress = new AllProgress();
+        allProgress.setProgresses(progresses);
+        allProgress.setCount(progresses.size());
+        return WrapMapper.okObtain("获取成功", allProgress);
+    }
 }
