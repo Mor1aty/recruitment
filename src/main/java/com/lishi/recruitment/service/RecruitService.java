@@ -13,7 +13,6 @@ import com.lishi.recruitment.constant.Constant;
 import com.lishi.recruitment.mapper.RecruitMapper;
 import com.lishi.recruitment.utils.ValueUtils;
 import com.lishi.recruitment.wrap.WrapMapper;
-import com.lishi.recruitment.wrap.WrapParams;
 import com.lishi.recruitment.wrap.Wrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
