@@ -4,6 +4,7 @@ import com.lishi.recruitment.bean.back.BackCompany;
 import com.lishi.recruitment.bean.back.BackJob;
 import com.lishi.recruitment.bean.back.BackProgress;
 import com.lishi.recruitment.bean.db.Job;
+import com.lishi.recruitment.bean.db.JobType;
 import com.lishi.recruitment.bean.db.Progress;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -129,4 +130,12 @@ public interface RecruitMapper {
      */
     @Insert("INSERT INTO progress(job, candidate, progress) VALUES(#{job}, #{candidate}, #{progress})")
     int insertProgress(Progress progress);
+
+    /**
+     * 获取所有职位类型
+     *
+     * @return List<JobType>
+     */
+    @Select("SELECT * FROM job_type")
+    List<JobType> findAllJobType();
 }

@@ -9,6 +9,7 @@ import com.lishi.recruitment.bean.back.AllCompany;
 import com.lishi.recruitment.bean.back.AllProgress;
 import com.lishi.recruitment.bean.back.AllRecruit;
 import com.lishi.recruitment.bean.back.CandidateInfo;
+import com.lishi.recruitment.bean.db.JobType;
 import com.lishi.recruitment.bean.param.ParamCondition;
 import com.lishi.recruitment.constant.Constant;
 import com.lishi.recruitment.service.RecruitService;
@@ -19,6 +20,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * @author LiShi
@@ -170,5 +173,15 @@ public class RecruitController {
     @NeedLogin(level = Constant.IDENTITY_CANDIDATE)
     public Wrapper<AllProgress> findMyProgress(WrapParams wrapParams) {
         return recruitService.findMyProgress(((UserToken) wrapParams.getTokenValue("token")).getAccount());
+    }
+
+    /**
+     * 获取所有职位类型
+     *
+     * @return Wrapper<List < JobType>>
+     */
+    @PostMapping("findAllJobType")
+    public Wrapper<List<JobType>> findAllJobType() {
+        return recruitService.findAllJobType();
     }
 }

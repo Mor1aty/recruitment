@@ -5,6 +5,7 @@ import com.lishi.recruitment.bean.back.AllProgress;
 import com.lishi.recruitment.bean.back.AllRecruit;
 import com.lishi.recruitment.bean.back.BackProgress;
 import com.lishi.recruitment.bean.db.Job;
+import com.lishi.recruitment.bean.db.JobType;
 import com.lishi.recruitment.bean.db.Progress;
 import com.lishi.recruitment.bean.param.Condition;
 import com.lishi.recruitment.bean.param.ParamCondition;
@@ -74,7 +75,10 @@ public class RecruitService {
             sb.append("where ");
             for (ParamWhere where : wheres) {
                 sb.append(where.getKey()).append(" ").append(where.getOpt()).append(" '").
-                        append(where.getValue()).append("' ").append(where.getNext()).append(" ");
+                        append(where.getValue()).append("' ");
+                if (where.getNext() != null) {
+                    sb.append(where.getNext()).append(" ");
+                }
             }
         }
         if (ValueUtils.valNotEmpty(paramCondition.getOrder()) && ValueUtils.valNotEmpty(paramCondition.getOrderBy())) {
@@ -216,5 +220,14 @@ public class RecruitService {
         allProgress.setProgresses(progresses);
         allProgress.setCount(progresses.size());
         return WrapMapper.okObtain("获取成功", allProgress);
+    }
+
+    /**
+     * 获取所有职位类型
+     *
+     * @return Wrapper<List < JobType>>
+     */
+    public Wrapper<List<JobType>> findAllJobType() {
+        return WrapMapper.okObtain("获取成功", recruitMapper.findAllJobType());
     }
 }
