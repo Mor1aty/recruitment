@@ -67,12 +67,12 @@ public class RecruitController {
      * @return Wrapper<String>
      */
     @PostMapping("addRecruit")
+    @NeedLogin(level = Constant.IDENTITY_COMPANY)
     @ParamValidation({@Param("name"), @Param(value = "type", method = Method.NUMBER), @Param("desc"), @Param("city"),
             @Param(value = "min_salary", method = Method.NUMBER), @Param(value = "max_salary", method = Method.NUMBER)})
-    @NeedLogin(level = Constant.IDENTITY_COMPANY)
     public Wrapper<String> addRecruit(WrapParams wrapParams) {
         return recruitService.addRecruit(wrapParams.getString("name"), wrapParams.getIntValue("type"),
-                ((UserToken) wrapParams.getTokenValue("token")).getAccount(), wrapParams.getString("desc"),
+                ((UserToken) wrapParams.getTokenValue("user")).getAccount(), wrapParams.getString("desc"),
                 wrapParams.getIntValue("minSalary"), wrapParams.getIntValue("maxSalary"),
                 wrapParams.getString("city"));
     }
@@ -84,15 +84,15 @@ public class RecruitController {
      * @return Wrapper<String>
      */
     @PostMapping("editRecruit")
+    @NeedLogin(level = Constant.IDENTITY_COMPANY)
     @ParamValidation({@Param(value = "id", method = Method.NUMBER), @Param("name"), @Param(value = "type", method = Method.NUMBER),
             @Param("desc"), @Param("city"), @Param(value = "min_salary", method = Method.NUMBER),
             @Param(value = "max_salary", method = Method.NUMBER)})
-    @NeedLogin(level = Constant.IDENTITY_COMPANY)
     public Wrapper<String> editRecruit(WrapParams wrapParams) {
         return recruitService.editRecruit(wrapParams.getIntValue("id"), wrapParams.getString("name"),
                 wrapParams.getIntValue("type"), wrapParams.getString("desc"), wrapParams.getIntValue("minSalary"),
                 wrapParams.getIntValue("maxSalary"), wrapParams.getString("city"),
-                ((UserToken) wrapParams.getTokenValue("token")).getAccount());
+                ((UserToken) wrapParams.getTokenValue("user")).getAccount());
     }
 
     /**
@@ -102,11 +102,11 @@ public class RecruitController {
      * @return Wrapper<String>
      */
     @PostMapping("delRecruit")
-    @ParamValidation({@Param(value = "id", method = Method.NUMBER)})
     @NeedLogin(level = Constant.IDENTITY_COMPANY)
+    @ParamValidation({@Param(value = "id", method = Method.NUMBER)})
     public Wrapper<String> delRecruit(WrapParams wrapParams) {
         return recruitService.delRecruit(wrapParams.getIntValue("id"),
-                ((UserToken) wrapParams.getTokenValue("token")).getAccount());
+                ((UserToken) wrapParams.getTokenValue("user")).getAccount());
     }
 
     /**
@@ -116,8 +116,8 @@ public class RecruitController {
      * @return Wrapper<AllProgress>
      */
     @PostMapping("findProgress")
-    @ParamValidation({@Param(value = "job", method = Method.NUMBER)})
     @NeedLogin(level = Constant.IDENTITY_COMPANY)
+    @ParamValidation({@Param(value = "job", method = Method.NUMBER)})
     public Wrapper<AllProgress> findProgress(WrapParams wrapParams) {
         return recruitService.findProgress(wrapParams.getIntValue("job"));
     }
@@ -129,8 +129,8 @@ public class RecruitController {
      * @return Wrapper<String>
      */
     @PostMapping("editProgress")
-    @ParamValidation({@Param(value = "id", method = Method.NUMBER), @Param(value = "result", method = Method.NUMBER)})
     @NeedLogin(level = Constant.IDENTITY_COMPANY)
+    @ParamValidation({@Param(value = "id", method = Method.NUMBER), @Param(value = "result", method = Method.NUMBER)})
     public Wrapper<String> editProgress(WrapParams wrapParams) {
         return recruitService.editProgress(wrapParams.getIntValue("id"), wrapParams.getIntValue("result"));
     }
@@ -142,8 +142,8 @@ public class RecruitController {
      * @return Wrapper<CandidateInfo>
      */
     @PostMapping("findCandidate")
-    @ParamValidation({@Param("candidate")})
     @NeedLogin(level = Constant.IDENTITY_COMPANY)
+    @ParamValidation({@Param("candidate")})
     public Wrapper<CandidateInfo> findCandidate(WrapParams wrapParams) {
         return userService.findCandidateInfo(wrapParams.getString("candidate"));
     }
@@ -155,11 +155,11 @@ public class RecruitController {
      * @return Wrapper<String>
      */
     @PostMapping("chooseJob")
-    @ParamValidation({@Param(value = "job", method = Method.NUMBER)})
     @NeedLogin(level = Constant.IDENTITY_CANDIDATE)
+    @ParamValidation({@Param(value = "job", method = Method.NUMBER)})
     public Wrapper<String> chooseJob(WrapParams wrapParams) {
         return recruitService.chooseJob(wrapParams.getIntValue("job"),
-                ((UserToken) wrapParams.getTokenValue("token")).getAccount());
+                ((UserToken) wrapParams.getTokenValue("user")).getAccount());
     }
 
     /**
@@ -169,10 +169,10 @@ public class RecruitController {
      * @return Wrapper<String>
      */
     @PostMapping("findMyProgress")
-    @ParamValidation
     @NeedLogin(level = Constant.IDENTITY_CANDIDATE)
+    @ParamValidation
     public Wrapper<AllProgress> findMyProgress(WrapParams wrapParams) {
-        return recruitService.findMyProgress(((UserToken) wrapParams.getTokenValue("token")).getAccount());
+        return recruitService.findMyProgress(((UserToken) wrapParams.getTokenValue("user")).getAccount());
     }
 
     /**

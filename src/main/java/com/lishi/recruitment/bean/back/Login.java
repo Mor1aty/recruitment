@@ -12,4 +12,5 @@ public class Login {
     private String tokenCode;
     private String account;
     private Object info;
+    private int type;
 }

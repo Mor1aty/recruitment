@@ -80,7 +80,19 @@ public class UserService {
         login.setAccount(account);
         login.setTokenCode(tokenCode);
         login.setInfo(obj);
+        login.setType(type);
         return login;
+    }
+
+    /**
+     * 注销
+     *
+     * @param token UserToken
+     * @return Wrapper<String>
+     */
+    public Wrapper<String> logout(UserToken token) {
+        TokenUtil.removeToken(token.code);
+        return WrapMapper.okExec("注销成功");
     }
 
     /**

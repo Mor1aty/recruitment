@@ -9,6 +9,7 @@ import lombok.Data;
  */
 @Data
 public class BackCompany {
+    private String account;
     private String name;
     private String city;
     private String website;

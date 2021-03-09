@@ -42,6 +42,19 @@ public class UserController {
     }
 
     /**
+     * 注销
+     *
+     * @param wrapParams WrapParams
+     * @return Wrapper<String>
+     */
+    @PostMapping("logout")
+    @NeedLogin("user")
+    @ParamValidation
+    public Wrapper<String> logout(WrapParams wrapParams) {
+        return userService.logout((UserToken) wrapParams.getTokenValue("user"));
+    }
+
+    /**
      * 注册应聘者
      *
      * @param wrapParams WrapParams

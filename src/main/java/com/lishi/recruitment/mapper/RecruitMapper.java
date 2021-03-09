@@ -48,7 +48,7 @@ public interface RecruitMapper {
      * @param condition String
      * @return List<Job>
      */
-    @Select("SELECT name, city, website, `desc` FROM company ${condition}")
+    @Select("SELECT account, name, city, website, `desc` FROM company ${condition}")
     List<BackCompany> findCompanyByCondition(@Param("condition") String condition);
 
     /**
