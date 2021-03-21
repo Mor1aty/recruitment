@@ -11,9 +11,9 @@ import java.util.List;
  */
 @Data
 public class ParamCondition {
-    private String order;
-    private String orderBy;
-    private int pageNum;
-    private int pageSize;
-    private List<ParamWhere> wheres;
+    private String order;  //正序还是倒序（给数据库用）
+    private String orderBy;//根据某字段
+    private int pageNum;//页码
+    private int pageSize;//每页多少条
+    private List<ParamWhere> wheres;//判断条件
 }

@@ -42,10 +42,11 @@ public class RecruitController {
      * @param wrapParams WrapParams
      * @return Wrapper<AllRecruit>
      */
-    @PostMapping("findRecruit")
+    @PostMapping("findRecruit")//通过地址访问接口
     @ParamValidation
     public Wrapper<AllRecruit> findRecruitByCondition(WrapParams wrapParams) {
-        return recruitService.findRecruitByCondition(wrapParams.getObject(ParamCondition.class));
+        return recruitService.findRecruitByCondition(wrapParams.getObject(ParamCondition.class));//把前端传过来的参数转化成ParamCondition形式传过来
+
     }
 
     /**
@@ -149,7 +150,7 @@ public class RecruitController {
     }
 
     /**
-     * 个人选择工作
+     * 个人选择工作（往进度表里查入）
      *
      * @param wrapParams WrapParams
      * @return Wrapper<String>

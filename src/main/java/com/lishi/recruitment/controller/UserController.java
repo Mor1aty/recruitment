@@ -48,10 +48,10 @@ public class UserController {
      * @return Wrapper<String>
      */
     @PostMapping("logout")
-    @NeedLogin("user")
+    @NeedLogin("user")//必须登入才可以调用接口
     @ParamValidation
     public Wrapper<String> logout(WrapParams wrapParams) {
-        return userService.logout((UserToken) wrapParams.getTokenValue("user"));
+        return userService.logout((UserToken) wrapParams.getTokenValue("user"));//强制转化类型，得到系统存储的用户登入数据
     }
 
     /**
@@ -64,7 +64,7 @@ public class UserController {
     @ParamValidation({@Param("account"), @Param("password"), @Param("name"), @Param("gender"),
             @Param(value = "phone", method = Method.PHONE), @Param(value = "email", method = Method.EMAIL),
             @Param(value = "birthday")})
-    public Wrapper<String> registerCandidate(WrapParams wrapParams) {
+    public Wrapper<String> registerCandidate(WrapParams wrapParams) { //前端传来的参数全放WrapParams里
         return userService.registerCandidate(wrapParams.getString("account"), wrapParams.getString("password"),
                 wrapParams.getString("name"), wrapParams.getString("gender"), wrapParams.getString("phone"),
                 wrapParams.getString("email"), wrapParams.getString("birthday"));
@@ -95,7 +95,7 @@ public class UserController {
     @ParamValidation
     public Wrapper<CandidateInfo> findCandidateInfo(WrapParams wrapParams) {
         return userService.findCandidateInfo(((UserToken) wrapParams.getTokenValue("token")).getAccount());
-    }
+    }//token：保留用户登入状态的信息
 
     /**
      * 修改密码
@@ -106,7 +106,7 @@ public class UserController {
     @PostMapping("changePassword")
     @NeedLogin
     @ParamValidation({@Param("oldPassword"), @Param("newPassword"), @Param(value = "type", method = Method.NUMBER)})
-    public Wrapper<String> changePassword(WrapParams wrapParams) {
+    public Wrapper<String> changePassword(WrapParams wrapParams) {//前端传过来的参数全放wrapParams里
         return userService.changePassword(((UserToken) wrapParams.getTokenValue("token")).getAccount(),
                 wrapParams.getString("oldPassword"), wrapParams.getString("newPassword"),
                 wrapParams.getIntValue("type"));
@@ -119,7 +119,7 @@ public class UserController {
      * @return Wrapper<String>
      */
     @PostMapping("updateCandidate")
-    @NeedLogin(level = Constant.IDENTITY_CANDIDATE)
+    @NeedLogin(level = Constant.IDENTITY_CANDIDATE)//此次请求是应聘者界面用的
     @ParamValidation({@Param("name"), @Param("gender"), @Param(value = "phone", method = Method.PHONE),
             @Param(value = "email", method = Method.EMAIL), @Param(value = "birthday")})
     public Wrapper<String> updateCandidate(WrapParams wrapParams) {

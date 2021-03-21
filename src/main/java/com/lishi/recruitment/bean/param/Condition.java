@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Condition {
-    private String condition;
-    private String conditionWithLimit;
+    private String condition;//不带分页的查询条件
+    private String conditionWithLimit;//带分页的查询条件
 
 }

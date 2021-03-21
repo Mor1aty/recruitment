@@ -36,13 +36,13 @@ public class UserService {
      *
      * @param account  String
      * @param password String
-     * @param type     String
+     * @param type     int
      * @return Wrapper<String>
      */
     public Wrapper<Login> login(String account, String password, int type) {
         switch (type) {
             case Constant
-                    .IDENTITY_CANDIDATE: {
+                    .IDENTITY_CANDIDATE: {//业务常量
                 Candidate candidate = userMapper.findCandidateByAccountAndPassword(account, password);
                 if (candidate == null) {
                     return WrapMapper.errorExec("帐号密码错误");
@@ -153,7 +153,7 @@ public class UserService {
         // 1、判断帐号是否存在
         Company company = userMapper.findCompanyByAccount(account);
         if (company != null) {
-            return WrapMapper.errorExec("帐号已存在");
+            return WrapMapper.errorExec("帐号已存在");//错误封装类
         }
 
         // 2、信息存入数据库

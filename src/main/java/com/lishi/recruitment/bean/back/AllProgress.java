@@ -11,6 +11,6 @@ import java.util.List;
  */
 @Data
 public class AllProgress {
-    private long count;
-    private List<BackProgress> progresses;
+    private long count;//多少个
+    private List<BackProgress> progresses;//当前页有多少个
 }

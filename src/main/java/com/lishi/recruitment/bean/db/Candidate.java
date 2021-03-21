@@ -21,5 +21,5 @@ public class Candidate {
     private String phone;
     private String email;
     private Date birthday;
-    private String desc;
+    private String desc;  //描述
 }

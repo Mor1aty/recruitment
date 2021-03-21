@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * @author LiShi
  * date: 2020/12/31 14:20
- * description: 参数封装
+ * description: 参数封装，封装前端传过来的参数
  */
 public class WrapParams {
     /**

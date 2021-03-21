@@ -12,5 +12,5 @@ import java.util.List;
 @Data
 public class AllRecruit {
     private long count;
-    private List<BackJob> jobs;
+    private List<BackJob> jobs;//分页用的，当前页显示多少个
 }

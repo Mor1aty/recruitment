@@ -38,8 +38,8 @@ public class RecruitService {
      * @return Wrapper<AllRecruit>
      */
     public Wrapper<AllRecruit> findRecruitByCondition(ParamCondition paramCondition) {
-        Condition condition = handleParamCondition(paramCondition);
-        AllRecruit allRecruit = new AllRecruit();
+        Condition condition = handleParamCondition(paramCondition); // 把前端传来的参数处理成 SQL 的条件
+        AllRecruit allRecruit = new AllRecruit(); // 返回给前端的
         allRecruit.setJobs(recruitMapper.findRecruitByCondition(condition.getConditionWithLimit()));
         allRecruit.setCount(recruitMapper.findRecruitCountByCondition(condition.getCondition()));
 
@@ -68,9 +68,8 @@ public class RecruitService {
      * @return Condition
      */
     private Condition handleParamCondition(ParamCondition paramCondition) {
-        List<ParamWhere> wheres = paramCondition.getWheres();
-        StringBuilder sb = new StringBuilder();
-        String limit = "";
+        List<ParamWhere> wheres = paramCondition.getWheres(); // 前端传入的判断条件
+        StringBuilder sb = new StringBuilder();//拼接修改字符串
         if (wheres != null && !wheres.isEmpty()) {
             sb.append("where ");
             for (ParamWhere where : wheres) {
@@ -81,10 +80,13 @@ public class RecruitService {
                 }
             }
         }
+        // 做排序
         if (ValueUtils.valNotEmpty(paramCondition.getOrder()) && ValueUtils.valNotEmpty(paramCondition.getOrderBy())) {
             sb.append("order by `").append(paramCondition.getOrderBy()).append("` ").
                     append(paramCondition.getOrder()).append(" ");
         }
+        // 做分页
+        String limit = "";
         if (paramCondition.getPageNum() > 0 && paramCondition.getPageSize() > 0) {
             int pageNum = (paramCondition.getPageNum() - 1) * paramCondition.getPageSize();
             limit = "limit " + pageNum + ", " + paramCondition.getPageSize() + " ";
