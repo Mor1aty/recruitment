@@ -67,7 +67,7 @@ public interface RecruitMapper {
      * @return int
      */
     @Insert("INSERT INTO job(name, type, company, `desc`, min_salary, max_salary, city) " +
-            "VALUES(#{name}, #{type}, #{type}, #{company}, #{desc}, #{minSalary}, #{maxSalary}, #{city})")
+            "VALUES(#{name}, #{type}, #{company}, #{desc}, #{minSalary}, #{maxSalary}, #{city})")
     int insertJob(Job job);
 
     /**
@@ -119,7 +119,7 @@ public interface RecruitMapper {
      * @param result int
      * @return int
      */
-    @Update("UPDATE progress SET progress = #{progress} WHERE id = #{id}")
+    @Update("UPDATE progress SET progress = #{result} WHERE id = #{id}")
     int updateProgress(@Param("id") int id, @Param("result") int result);
 
     /**
@@ -138,4 +138,16 @@ public interface RecruitMapper {
      */
     @Select("SELECT * FROM job_type")
     List<JobType> findAllJobType();
+
+    /**
+     * 个人查询职位的个人应聘进度
+     *
+     * @param candidate String
+     * @param job       int
+     * @return BackProgress
+     */
+    @Select("SELECT p.id, p.job, j.name AS jobName, p.candidate AS candidateAccount, c.name AS candidateName, c.gender AS candidateGender, p.progress " +
+            "FROM progress p LEFT JOIN candidate c ON p.candidate = c.account " +
+            "LEFT JOIN job j ON p.job = j.id WHERE p.candidate = #{candidate} AND p.job = #{job}")
+    BackProgress findJobProgress(@Param("candidate") String candidate, @Param("job") int job);
 }

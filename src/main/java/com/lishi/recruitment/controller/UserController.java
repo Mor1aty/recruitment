@@ -48,10 +48,10 @@ public class UserController {
      * @return Wrapper<String>
      */
     @PostMapping("logout")
-    @NeedLogin("user")//必须登入才可以调用接口
+    @NeedLogin()//必须登入才可以调用接口
     @ParamValidation
     public Wrapper<String> logout(WrapParams wrapParams) {
-        return userService.logout((UserToken) wrapParams.getTokenValue("user"));//强制转化类型，得到系统存储的用户登入数据
+        return userService.logout((UserToken) wrapParams.getTokenValue("token"));//强制转化类型，得到系统存储的用户登入数据
     }
 
     /**

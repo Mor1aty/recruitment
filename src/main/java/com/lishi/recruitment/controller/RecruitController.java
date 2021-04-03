@@ -5,10 +5,7 @@ import com.lishi.recruitment.annotation.valid.aspect.Param;
 import com.lishi.recruitment.annotation.valid.aspect.ParamValidation;
 import com.lishi.recruitment.annotation.valid.bean.Method;
 import com.lishi.recruitment.bean.UserToken;
-import com.lishi.recruitment.bean.back.AllCompany;
-import com.lishi.recruitment.bean.back.AllProgress;
-import com.lishi.recruitment.bean.back.AllRecruit;
-import com.lishi.recruitment.bean.back.CandidateInfo;
+import com.lishi.recruitment.bean.back.*;
 import com.lishi.recruitment.bean.db.JobType;
 import com.lishi.recruitment.bean.param.ParamCondition;
 import com.lishi.recruitment.constant.Constant;
@@ -70,10 +67,10 @@ public class RecruitController {
     @PostMapping("addRecruit")
     @NeedLogin(level = Constant.IDENTITY_COMPANY)
     @ParamValidation({@Param("name"), @Param(value = "type", method = Method.NUMBER), @Param("desc"), @Param("city"),
-            @Param(value = "min_salary", method = Method.NUMBER), @Param(value = "max_salary", method = Method.NUMBER)})
+            @Param(value = "minSalary", method = Method.NUMBER), @Param(value = "maxSalary", method = Method.NUMBER)})
     public Wrapper<String> addRecruit(WrapParams wrapParams) {
         return recruitService.addRecruit(wrapParams.getString("name"), wrapParams.getIntValue("type"),
-                ((UserToken) wrapParams.getTokenValue("user")).getAccount(), wrapParams.getString("desc"),
+                ((UserToken) wrapParams.getTokenValue("token")).getAccount(), wrapParams.getString("desc"),
                 wrapParams.getIntValue("minSalary"), wrapParams.getIntValue("maxSalary"),
                 wrapParams.getString("city"));
     }
@@ -87,13 +84,13 @@ public class RecruitController {
     @PostMapping("editRecruit")
     @NeedLogin(level = Constant.IDENTITY_COMPANY)
     @ParamValidation({@Param(value = "id", method = Method.NUMBER), @Param("name"), @Param(value = "type", method = Method.NUMBER),
-            @Param("desc"), @Param("city"), @Param(value = "min_salary", method = Method.NUMBER),
-            @Param(value = "max_salary", method = Method.NUMBER)})
+            @Param("desc"), @Param("city"), @Param(value = "minSalary", method = Method.NUMBER),
+            @Param(value = "maxSalary", method = Method.NUMBER)})
     public Wrapper<String> editRecruit(WrapParams wrapParams) {
         return recruitService.editRecruit(wrapParams.getIntValue("id"), wrapParams.getString("name"),
                 wrapParams.getIntValue("type"), wrapParams.getString("desc"), wrapParams.getIntValue("minSalary"),
                 wrapParams.getIntValue("maxSalary"), wrapParams.getString("city"),
-                ((UserToken) wrapParams.getTokenValue("user")).getAccount());
+                ((UserToken) wrapParams.getTokenValue("token")).getAccount());
     }
 
     /**
@@ -107,7 +104,7 @@ public class RecruitController {
     @ParamValidation({@Param(value = "id", method = Method.NUMBER)})
     public Wrapper<String> delRecruit(WrapParams wrapParams) {
         return recruitService.delRecruit(wrapParams.getIntValue("id"),
-                ((UserToken) wrapParams.getTokenValue("user")).getAccount());
+                ((UserToken) wrapParams.getTokenValue("token")).getAccount());
     }
 
     /**
@@ -160,7 +157,7 @@ public class RecruitController {
     @ParamValidation({@Param(value = "job", method = Method.NUMBER)})
     public Wrapper<String> chooseJob(WrapParams wrapParams) {
         return recruitService.chooseJob(wrapParams.getIntValue("job"),
-                ((UserToken) wrapParams.getTokenValue("user")).getAccount());
+                ((UserToken) wrapParams.getTokenValue("token")).getAccount());
     }
 
     /**
@@ -173,7 +170,21 @@ public class RecruitController {
     @NeedLogin(level = Constant.IDENTITY_CANDIDATE)
     @ParamValidation
     public Wrapper<AllProgress> findMyProgress(WrapParams wrapParams) {
-        return recruitService.findMyProgress(((UserToken) wrapParams.getTokenValue("user")).getAccount());
+        return recruitService.findMyProgress(((UserToken) wrapParams.getTokenValue("token")).getAccount());
+    }
+
+    /**
+     * 个人查询职位的个人应聘进度
+     *
+     * @param wrapParams WrapParams
+     * @return Wrapper<String>
+     */
+    @PostMapping("findJobProgress")
+    @NeedLogin(level = Constant.IDENTITY_CANDIDATE)
+    @ParamValidation
+    public Wrapper<BackProgress> findJobProgress(WrapParams wrapParams) {
+        return recruitService.findJobProgress(((UserToken) wrapParams.getTokenValue("token")).getAccount(),
+                wrapParams.getIntValue("job"));
     }
 
     /**

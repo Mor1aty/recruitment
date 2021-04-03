@@ -82,7 +82,7 @@ public class RecruitService {
         }
         // 做排序
         if (ValueUtils.valNotEmpty(paramCondition.getOrder()) && ValueUtils.valNotEmpty(paramCondition.getOrderBy())) {
-            sb.append("order by `").append(paramCondition.getOrderBy()).append("` ").
+            sb.append("order by ").append(paramCondition.getOrderBy()).append(" ").
                     append(paramCondition.getOrder()).append(" ");
         }
         // 做分页
@@ -114,7 +114,7 @@ public class RecruitService {
         job.setDesc(desc);
         job.setMinSalary(minSalary);
         job.setMaxSalary(maxSalary);
-        job.setCompany(city);
+        job.setCity(city);
         if (recruitMapper.insertJob(job) <= 0) {
             return WrapMapper.errorExec("发布新招聘失败");
         }
@@ -142,7 +142,7 @@ public class RecruitService {
         job.setDesc(desc);
         job.setMinSalary(minSalary);
         job.setMaxSalary(maxSalary);
-        job.setCompany(city);
+        job.setCity(city);
         job.setCompany(company);
         if (recruitMapper.updateJob(job) <= 0) {
             return WrapMapper.errorExec("更新招聘失败");
@@ -231,5 +231,16 @@ public class RecruitService {
      */
     public Wrapper<List<JobType>> findAllJobType() {
         return WrapMapper.okObtain("获取成功", recruitMapper.findAllJobType());
+    }
+
+    /**
+     * 个人查询职位的个人应聘进度
+     *
+     * @param account String
+     * @param job     int
+     * @return Wrapper
+     */
+    public Wrapper<BackProgress> findJobProgress(String account, int job) {
+        return WrapMapper.okObtain("获取成功", recruitMapper.findJobProgress(account, job));
     }
 }

@@ -26,7 +26,7 @@ public class WrapParams {
     @Override
     public String toString() {
         return jsonObject.toString();
-    }
+    }//打印用
 
     /**
      * 存入字段
@@ -57,7 +57,7 @@ public class WrapParams {
     }
 
     /**
-     * 判断参数是否包含 key
+     * 判断参数是否包含 key（键）
      *
      * @param key Object
      * @return boolean
@@ -67,7 +67,7 @@ public class WrapParams {
     }
 
     /**
-     * 判断参数是否包含 value
+     * 判断参数是否包含 value（值）
      *
      * @param value Object
      * @return boolean
@@ -87,7 +87,7 @@ public class WrapParams {
     }
 
     /**
-     * 根据 key 获取对应 value，转化为 JSONObject
+     * 根据 key 获取对应 value，转化为 JSONObject（把里面的值转化成JsonObject值）
      *
      * @param key String
      * @return JSONObject

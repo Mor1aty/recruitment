@@ -73,7 +73,7 @@ public class UserService {
     private Login loginAfter(String account, int type, Object obj) {
         UserToken userToken = new UserToken();
         userToken.setAccount(account);
-        userToken.effectiveTime = -1;
+        userToken.effectiveTime = -1;//永久存储
         userToken.level = type;
         String tokenCode = TokenUtil.putTokenStorage(userToken);
         Login login = new Login();
@@ -91,7 +91,9 @@ public class UserService {
      * @return Wrapper<String>
      */
     public Wrapper<String> logout(UserToken token) {
-        TokenUtil.removeToken(token.code);
+        if (token != null) {
+            TokenUtil.removeToken(token.code);
+        }
         return WrapMapper.okExec("注销成功");
     }
 
